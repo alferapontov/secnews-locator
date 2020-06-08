@@ -34,8 +34,7 @@ for source in sources:
             news['URL'] = feed.entries[i].link
             news['summary'] = feed.entries[i].summary
             news['keywords'] = feed.entries[i].summary.split()
-            if 'data' in news['keywords']:
-                news_list.append(news) 
+            news_list.append(news) 
     else:
         for i in range(0, len(feed.entries)):
             news = {}
@@ -45,22 +44,7 @@ for source in sources:
             news['summary'] = feed.entries[i].summary
             print(feed.entries[i].title)
             news['keywords'] = feed.entries[i].summary.split()
-            if 'data' in news['keywords']:
-                news_list.append(news)
+            news_list.append(news)
 
 all_news = pd.DataFrame(news_list)
 all_news.to_csv('secnews.csv')
-
-# scope = ['https://spreadsheets.google.com/feeds',
-#          'https://www.googleapis.com/auth/drive']
-#
-# credentials = ServiceAccountCredentials.from_json_keyfile_name(
-#          'twi-scr-f0feb73acce5.json', scope) # Your json file here
-#
-# gc = gspread.authorize(credentials)
-#
-# sh = gc.create('news_spready')
-# sh.share('alferapontov@gmail.com', perm_type='user', role='writer')
-#
-# spread.df_to_sheet(all_news, sheet = gc.create('news_spready'))
-# sh.share('alferapontov@gmail.com', perm_type='user', role='writer')
