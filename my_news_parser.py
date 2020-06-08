@@ -1,8 +1,5 @@
 import feedparser
 import pandas as pd
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from gspread_pandas import spread
 
 sources = ['https://www.zdnet.com/topic/security/rss.xml',
 'https://www.databreaches.net/feed/', 'https://threatpost.com/feed/',
@@ -33,8 +30,9 @@ for source in sources:
             news['date'] = feed.entries[i].published
             news['URL'] = feed.entries[i].link
             news['summary'] = feed.entries[i].summary
+            news['summary'] = news['summary'].replace('<p>', '')
             news['keywords'] = feed.entries[i].summary.split()
-            news_list.append(news) 
+            news_list.append(news)
     else:
         for i in range(0, len(feed.entries)):
             news = {}
@@ -42,7 +40,7 @@ for source in sources:
             news['date'] = feed.entries[i].published
             news['URL'] = feed.entries[i].link
             news['summary'] = feed.entries[i].summary
-            print(feed.entries[i].title)
+            news['summary'] = news['summary'].replace('<p>', '')
             news['keywords'] = feed.entries[i].summary.split()
             news_list.append(news)
 
