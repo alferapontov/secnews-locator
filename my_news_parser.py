@@ -1,5 +1,6 @@
 import feedparser
 import pandas as pd
+from bs4 import BeautifulSoup
 
 sources = ['https://www.zdnet.com/topic/security/rss.xml',
 'https://www.databreaches.net/feed/', 'https://threatpost.com/feed/',
@@ -29,9 +30,15 @@ for source in sources:
             news['title'] = feed.entries[i].title
             news['date'] = feed.entries[i].published
             news['URL'] = feed.entries[i].link
-            news['summary'] = feed.entries[i].summary
-            news['summary'] = news['summary'].replace('<p>', '')
-            news['keywords'] = feed.entries[i].summary.split()
+            news['summary'] = BeautifulSoup(feed.entries[i].summary, "lxml").text
+            if 'data' in news['summary']:
+                news['topic'] = 'data issues'
+            elif 'phishing' in news['summary']:
+                news['topic'] = 'phishing'
+            elif 'vulnerability' in news['summary']:
+                news['topic'] = 'vulnerabilities'
+            else:
+                news['topic'] = 'other'
             news_list.append(news)
     else:
         for i in range(0, len(feed.entries)):
@@ -39,9 +46,15 @@ for source in sources:
             news['title'] = feed.entries[i].title
             news['date'] = feed.entries[i].published
             news['URL'] = feed.entries[i].link
-            news['summary'] = feed.entries[i].summary
-            news['summary'] = news['summary'].replace('<p>', '')
-            news['keywords'] = feed.entries[i].summary.split()
+            news['summary'] = BeautifulSoup(feed.entries[i].summary, "lxml").text
+            if 'data' in news['summary']:
+                news['topic'] = 'data issues'
+            elif 'phishing' in news['summary']:
+                news['topic'] = 'phishing'
+            elif 'vulnerability' in news['summary']:
+                news['topic'] = 'vulnerabilities'
+            else:
+                news['topic'] = 'other'
             news_list.append(news)
 
 all_news = pd.DataFrame(news_list)
